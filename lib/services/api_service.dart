@@ -10,9 +10,20 @@ class ApiService {
 
   final String baseUrl = API_BASE_URL;
   String? _currentAdminId;
+  User? _currentUser; // Add this to store logged-in user data
 
   set currentAdminId(String? adminId) => _currentAdminId = adminId;
   String? get currentAdminId => _currentAdminId;
+
+  // Add getter and setter for current user
+  User? get currentUser => _currentUser;
+  set currentUser(User? user) => _currentUser = user;
+
+  // Add method to clear user data (for logout)
+  void clearUserData() {
+    _currentAdminId = null;
+    _currentUser = null;
+  }
 
   // Auth endpoints
   Future<dynamic> login(String identifier, String password) async {
@@ -27,7 +38,13 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        final userData = json.decode(response.body);
+
+        // Store the logged-in user information
+        _currentUser = User.fromJson(userData);
+        _currentAdminId = userData['userId']?.toString();
+
+        return userData;
       } else {
         throw Exception('Login failed: ${response.statusCode}');
       }
@@ -35,6 +52,8 @@ class ApiService {
       throw Exception('Login error: $e');
     }
   }
+
+  // ALL OTHER METHODS REMAIN EXACTLY THE SAME - NO CHANGES BELOW THIS LINE
 
   Future<dynamic> registerAdmin(String name, String email, String phoneNumber, String password) async {
     try {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 import '../widgets/neumorphic_surface.dart';
 
 class LandingPage extends StatelessWidget {
@@ -6,6 +7,8 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ApiService().clearUserData();
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: Center(

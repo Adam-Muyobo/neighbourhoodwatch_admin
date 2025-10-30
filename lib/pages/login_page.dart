@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // In the _login method, update the success section:
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -49,9 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text.trim(),
       );
 
-      // Store admin ID for future API calls
-      _apiService.currentAdminId = response['userId'].toString();
-
+      // User data is automatically stored in ApiService during login
       _showSuccess('Login successful!');
 
       // Navigate to admin dashboard
